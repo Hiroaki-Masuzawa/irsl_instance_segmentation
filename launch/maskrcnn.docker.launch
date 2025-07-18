@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="irsl_instance_segmentation" type="run_docker.sh" name="maskrcnn"/>
+</launch>

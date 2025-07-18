@@ -1,4 +1,11 @@
-FROM repo.irsl.eiiris.tut.ac.jp/irsl_base:cuda_12.1.0-cudnn8-devel-ubuntu22.04_one
+ARG BASE_IMAGE=repo.irsl.eiiris.tut.ac.jp/irsl_base:cuda_12.1.0-cudnn8-devel-ubuntu22.04_one
+
+FROM ${BASE_IMAGE}
+
+ENV IRSL_WS=/irsl_catkin_ws
+ENV IRSL_PROJECT=irsl_instance_segmentation 
+
+WORKDIR ${IRSL_WS}
 
 RUN apt update && apt install -y python3 python3-distutils curl git python-is-python3 python3-dev && \
     apt clean && \
@@ -21,28 +28,28 @@ ENV PYTHONPATH=/detectron2_repo
 
 
 # install Grounded-Segment-Anything
-# ENV AM_I_DOCKER=True
-# ENV BUILD_WITH_CUDA=1
-# ENV CUDA_HOME=/usr/local/cuda
+ENV AM_I_DOCKER=True
+ENV BUILD_WITH_CUDA=1
+ENV CUDA_HOME=/usr/local/cuda
 
-# RUN cd / \
-#     && git clone --recursive https://github.com/IDEA-Research/Grounded-Segment-Anything.git \
-#     && cd /Grounded-Segment-Anything \
-#     && python -m pip install -e segment_anything \
-#     && pip install --no-build-isolation -e GroundingDINO \
-#     && git clone https://github.com/xinyu1205/recognize-anything.git \
-#     && pip install -r ./recognize-anything/requirements.txt \
-#     && pip install -e ./recognize-anything/
+RUN cd / \
+    && git clone --recursive https://github.com/IDEA-Research/Grounded-Segment-Anything.git \
+    && cd /Grounded-Segment-Anything \
+    && python -m pip install -e segment_anything \
+    && pip install --no-build-isolation -e GroundingDINO \
+    && git clone https://github.com/xinyu1205/recognize-anything.git \
+    && pip install -r ./recognize-anything/requirements.txt \
+    && pip install -e ./recognize-anything/
 
-# RUN pip install supervision==0.21
-# RUN pip install litellm
+RUN pip install supervision==0.21
+RUN pip install litellm
 
-# RUN apt update && apt install -y wget
-# RUN cd /Grounded-Segment-Anything \
-#     && wget --quiet https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth \
-#     && wget --quiet https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth \
-#     && wget --quiet https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
-#     && wget --quiet  https://huggingface.co/spaces/xinyu1205/Tag2Text/resolve/main/ram_swin_large_14m.pth 
+RUN apt update && apt install -y wget
+RUN cd /Grounded-Segment-Anything \
+    && wget --quiet https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth \
+    && wget --quiet https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth \
+    && wget --quiet https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth \
+    && wget --quiet  https://huggingface.co/spaces/xinyu1205/Tag2Text/resolve/main/ram_swin_large_14m.pth 
 
 
 ENV PYTHONPATH=/Grounded-Segment-Anything:/Grounded-Segment-Anything/segment_anything:/Grounded-Segment-Anything/recognize-anything:/detectron2_repo
@@ -50,7 +57,9 @@ ENV PYTHONPATH=/Grounded-Segment-Anything:/Grounded-Segment-Anything/segment_any
 RUN apt update && apt install -q -qq -y python3-catkin-tools ros-${ROS_DISTRO}-cv-bridge 
 RUN pip install numpy==1.26.4
 
-RUN mkdir -p /catkin_ws/src/irsl_object_perception
-COPY . /catkin_ws/src/irsl_object_perception/
-RUN git clone https://github.com/Hiroaki-Masuzawa/irsl_ros_msgs.git -b add_instance_segmentation_msg  /catkin_ws/src/irsl_ros_msgs
-RUN bash -c "source /opt/ros/one/setup.bash && cd /catkin_ws && catkin build"
+RUN mkdir -p ${IRSL_WS}/src/${IRSL_PROJECT}
+COPY . ${IRSL_WS}/src/${IRSL_PROJECT}/
+RUN ( cd src; vcs import --recursive < ${IRSL_PROJECT}/dot.rosinstall )
+RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && catkin config --install && IRSL_BUILD_LOCAL=true catkin build"
+
+CMD [ "bash", "-c", "source ${IRSL_WS}/install/setup.bash && roslaunch ${IRSL_PROJECT} run.launch" ]

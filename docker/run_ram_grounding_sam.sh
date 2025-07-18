@@ -68,5 +68,6 @@ fi
 set -x 
 docker run -it --rm --gpus all \
 ${rosip_option} ${roshostname_option} ${rosmaster_option} \
-irsl_object_perception \
-bash -c "source /catkin_ws/devel/setup.bash && roslaunch irsl_object_perception instance_segmentation.launch"
+--name irsl_instance_segmentation_ram_grounding_sam \
+irsl_instance_segmentation \
+bash -c "source /catkin_ws/install/setup.bash && roslaunch irsl_instance_segmentation ram_grounding_sam.launch"

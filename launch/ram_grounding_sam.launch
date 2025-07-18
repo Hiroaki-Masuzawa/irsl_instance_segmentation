@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="irsl_instance_segmentation" type="ram_grounding_sam_node.py" name="ram_grounding_sam_node" output="screen" />
+</launch>

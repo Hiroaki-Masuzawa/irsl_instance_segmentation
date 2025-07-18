@@ -1,3 +1,0 @@
-<launch>
-  <node pkg="irsl_object_perception" type="instance_segmentation_node.py" name="instance_segmentation" output="screen" />
-</launch>

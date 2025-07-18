@@ -11,7 +11,7 @@ from detectron2 import model_zoo
 from detectron2.data import MetadataCatalog
 
 # Import base class
-from irsl_object_perception.object_perception import ObjectPerception
+from irsl_instance_segmentation.object_perception import ObjectPerception
 
 
 class InferenceDetectron2(ObjectPerception):
@@ -55,7 +55,7 @@ class InferenceDetectron2(ObjectPerception):
         """Performs object detection and segmentation on the input image.
 
         Args:
-            image (np.ndarray): Input image in BGR format (OpenCV style).
+            image (np.ndarray): Input image in RGB format (OpenCV style).
 
         Returns:
             List[Dict]: A list of dictionaries, each containing information

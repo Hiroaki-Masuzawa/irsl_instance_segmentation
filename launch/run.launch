@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="irsl_instance_segmentation" type="maskrcnn_node.py" name="maskrcnn" output="screen" />
+</launch>

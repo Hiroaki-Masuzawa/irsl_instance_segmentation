@@ -1,0 +1,3 @@
+- git:
+    local-name: irsl_ros_msgs
+    uri: https://github.com/IRSL-tut/irsl_ros_msgs.git

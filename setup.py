@@ -5,8 +5,8 @@ from catkin_pkg.python_setup import generate_distutils_setup
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
-    packages=['irsl_object_perception'],
-    package_dir={'irsl_object_perception': 'irsl_object_perception'},
+    packages=['irsl_instance_segmentation'],
+    package_dir={'irsl_instance_segmentation': 'irsl_instance_segmentation'},
 )
 
 setup(**setup_args)
