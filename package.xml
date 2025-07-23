@@ -50,11 +50,11 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend condition="$IRSL_LOCAL_BUILD == 'true'">irsl_detection_msgs</depend>
-  <depend condition="$IRSL_LOCAL_BUILD == 'true'">irsl_detection_srvs</depend>
-  <depend condition="$IRSL_LOCAL_BUILD == 'true'">rospy</depend>
-  <depend condition="$IRSL_LOCAL_BUILD == 'true'">sensor_msgs</depend>
-  <depend condition="$IRSL_LOCAL_BUILD == 'true'">std_msgs</depend>
+  <depend condition="$IRSL_BUILD_LOCAL == 'true'">irsl_detection_msgs</depend>
+  <depend condition="$IRSL_BUILD_LOCAL == 'true'">irsl_detection_srvs</depend>
+  <depend condition="$IRSL_BUILD_LOCAL == 'true'">rospy</depend>
+  <depend condition="$IRSL_BUILD_LOCAL == 'true'">sensor_msgs</depend>
+  <depend condition="$IRSL_BUILD_LOCAL == 'true'">std_msgs</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
