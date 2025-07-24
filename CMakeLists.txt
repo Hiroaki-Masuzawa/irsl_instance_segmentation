@@ -2,19 +2,6 @@ cmake_minimum_required(VERSION 3.0.2)
 project(irsl_instance_segmentation)
 
 
-if ("$ENV{IRSL_BUILD_LOCAL}")
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  irsl_detection_msgs
-  irsl_detection_srvs
-  rospy
-  sensor_msgs
-  std_msgs
-)
-endif()
-
 message("build_local: $ENV{IRSL_BUILD_LOCAL}")
 if ("$ENV{IRSL_BUILD_LOCAL}")
   message("build_mode: BUILD_LOCAL")
@@ -22,7 +9,20 @@ else()
   message("build_mode: JUST_INSTALL_FILES")
 endif()
 
+## Find catkin macros and libraries
+## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+## is used, also find other catkin packages
+find_package(catkin REQUIRED COMPONENTS
+)
+
 if ("$ENV{IRSL_BUILD_LOCAL}")
+  find_package(catkin REQUIRED COMPONENTS
+    irsl_detection_msgs
+    irsl_detection_srvs
+    rospy
+    sensor_msgs
+    std_msgs
+  )
   ## Uncomment this if the package has a setup.py. This macro ensures
   ## modules and global scripts declared therein get installed
   ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
