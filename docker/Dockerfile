@@ -60,6 +60,6 @@ RUN pip install numpy==1.26.4
 RUN mkdir -p ${IRSL_WS}/src/${IRSL_PROJECT}
 COPY . ${IRSL_WS}/src/${IRSL_PROJECT}/
 RUN ( cd src; vcs import --recursive < ${IRSL_PROJECT}/dot.rosinstall )
-RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && catkin config --install && IRSL_BUILD_LOCAL=true catkin build"
+RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && catkin config --install && VERBOSE=1 IRSL_BUILD_LOCAL=true catkin build"
 
 CMD [ "bash", "-c", "source ${IRSL_WS}/install/setup.bash && roslaunch ${IRSL_PROJECT} run.launch" ]
